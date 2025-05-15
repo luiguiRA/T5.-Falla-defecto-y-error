@@ -10,22 +10,20 @@ def iniciar_sesion():
         usuario = input("Ingrese su nombre de usuario: ")
         contrasena = input("Ingrese su contraseña: ")
 
-        # FALLO 1 (intencional):
-        # DEFECTO: Usamos 'or' en lugar de 'and'. Esto permite el acceso si EITHER usuario o contraseña coinciden.
-        # ERROR: Si el usuario es correcto pero la contraseña no lo es, se concede acceso.
-        # FALLO: El sistema permite entrar a alguien con contraseña incorrecta.
-        if usuario in usuarios or usuarios.get(usuario) == contrasena:
+        # CORRECCIÓN del FALLO 1:
+        # Se reemplaza el operador 'or' por 'and' para asegurar que:
+        # 1. El usuario exista
+        # 2. La contraseña coincida con la del usuario correspondiente
+        if usuario in usuarios and usuarios.get(usuario) == contrasena:
             print("Inicio de sesión exitoso.")
             return True
         else:
             intentos_restantes -= 1
             print(f"Credenciales incorrectas. Intentos restantes: {intentos_restantes}")
 
-    # FALLO 2 (intencional):
-    # DEFECTO: El mensaje de acceso denegado no se imprime si se fallan los 3 intentos.
-    # ERROR: El flujo llega al final de la función sin mostrar el mensaje al usuario.
-    # FALLO: El usuario no sabe que el acceso fue definitivamente denegado.
-    # Solución sería imprimir aquí un mensaje claro, pero está omitido a propósito.
+    # CORRECCIÓN del FALLO 2:
+    # Se agrega un mensaje claro al usuario cuando ha agotado todos los intentos
+    print("Acceso denegado. Ha superado el número máximo de intentos.")
     return False
 
 
